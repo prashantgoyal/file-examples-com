@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Practice_DA_2207"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "7af77b68-16d1-b226-4f5c-786df869bd9d"
+  }
+}
