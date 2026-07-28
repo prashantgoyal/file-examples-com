@@ -26,7 +26,6 @@
 # MARKDOWN ********************
 
 # # OneLake CSV Ingestion Pipeline
-#
 # This notebook reads a source CSV file from OneLake, removes bad records,
 # and writes the clean dataset back to a target folder in OneLake.
 
@@ -48,6 +47,13 @@ spark = SparkSession.builder.appName("OneLake_CSV_Pipeline").getOrCreate()
 
 print("Spark session initialized")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # Replace these paths with the actual OneLake Files paths for your workspace.
@@ -63,6 +69,13 @@ raw_df = spark.read.format("csv") \
     .load(source_file_path)
 
 print(f"Source rows read: {raw_df.count()}")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -103,6 +116,13 @@ good_df = normalized_df.filter(~bad_condition)
 print(f"Bad records identified: {bad_df.count()}")
 print(f"Clean records available: {good_df.count()}")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # Remove duplicates and add ingestion metadata
@@ -116,6 +136,13 @@ clean_df = good_df \
     .withColumn("ingestion_timestamp", F.current_timestamp())
 
 bad_df = bad_df.withColumn("bad_record_timestamp", F.current_timestamp())
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -132,6 +159,13 @@ bad_df.write.format("delta") \
 print(f"Clean data written to: {target_clean_path}")
 print(f"Bad data written to: {target_bad_path}")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # Final validation counts
@@ -140,3 +174,10 @@ bad_count = spark.read.format("delta").load(target_bad_path).count()
 
 print(f"Final clean dataset count: {clean_count}")
 print(f"Final bad dataset count: {bad_count}")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
