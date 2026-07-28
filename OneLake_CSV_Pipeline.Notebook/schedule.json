@@ -1,0 +1,10 @@
+{
+  "type": "Schedule",
+  "displayName": "OneLake CSV Pipeline Weekday Schedule",
+  "pipeline": "OneLake CSV Pipeline",
+  "triggerType": "Cron",
+  "cronExpression": "0 8 * * 1-5",
+  "timeZone": "UTC",
+  "description": "Run the OneLake CSV Pipeline every weekday at 08:00 UTC.",
+  "enabled": true
+}
