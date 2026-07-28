@@ -26,8 +26,7 @@
 # MARKDOWN ********************
 
 # # OneLake CSV Ingestion Pipeline
-#
-# This notebook reads a source CSV file from OneLake, removes bad records,
+# # This notebook reads a source CSV file from OneLake, removes bad records,
 # and writes the clean dataset back to a target folder in OneLake.
 
 # CELL ********************
