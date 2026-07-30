@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "seed_promotions_dataload"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "8f41c8b9-0d02-4b8c-93fb-2a84dbef8d9c"
+  }
+}

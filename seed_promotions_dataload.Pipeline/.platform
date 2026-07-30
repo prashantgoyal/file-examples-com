@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Pipeline",
+    "displayName": "seed_promotions_dataload"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d1a7ea1f-9e8b-427c-8ec1-0a483f9b2f3b"
+  }
+}

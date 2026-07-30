@@ -1,0 +1,12 @@
+{
+  "name": "seed_promotions_dataload",
+  "description": "Pipeline to run the seed_promotions_dataload SCD2 notebook.",
+  "activities": [
+    {
+      "name": "Run seed promotions SCD2 notebook",
+      "type": "Notebook",
+      "notebookPath": "seed_promotions_dataload.Notebook/notebook-content.py",
+      "dependsOn": []
+    }
+  ]
+}
