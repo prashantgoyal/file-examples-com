@@ -63,17 +63,30 @@ print(f"Loaded source rows: {raw_df.count()}")
 # CELL ********************
 
 staging_df = raw_df \
-    .withColumn("order_date", F.to_date("order_date", "yyyy-MM-dd")) \
-    .withColumn("sales_amount", F.col("sales_amount").cast("decimal(18,2)")) \
+    .select(
+        "transaction_id",
+        "line_number",
+        "transaction_date",
+        "store_id",
+        "sku",
+        "customer_id",
+        "promotion_id",
+        "quantity_sold"
+    ) \
+    .withColumn("transaction_date", F.to_date("transaction_date", "yyyy-MM-dd")) \
+    .withColumn("quantity_sold", F.col("quantity_sold").cast("int")) \
     .withColumn("effective_start_date", F.current_date()) \
     .withColumn("effective_end_date", F.lit(None).cast("date")) \
     .withColumn("current_flag", F.lit(True)) \
     .withColumn("record_hash", F.md5(F.concat_ws("||",
-        F.col("sales_id"),
-        F.col("product"),
-        F.col("sales_region"),
-        F.col("sales_amount"),
-        F.col("order_date")
+        F.col("transaction_id"),
+        F.col("line_number"),
+        F.col("transaction_date"),
+        F.col("store_id"),
+        F.col("sku"),
+        F.col("customer_id"),
+        F.col("promotion_id"),
+        F.col("quantity_sold")
     )))
 
 # CELL ********************
@@ -84,19 +97,19 @@ if DeltaTable.isDeltaTable(spark, target_path):
 
     changed_df = staging_df.alias("src").join(
         current_df.alias("t"),
-        on=["sales_id"],
+        on=["transaction_id", "line_number"],
         how="left_outer"
     ).filter(
-        "t.sales_id IS NULL OR src.record_hash <> t.record_hash"
+        "t.transaction_id IS NULL OR src.record_hash <> t.record_hash"
     ).select("src.*")
 
     changed_count = changed_df.count()
     if changed_count > 0:
-        changed_ids_df = changed_df.select("sales_id").distinct()
+        changed_keys = changed_df.select("transaction_id", "line_number").distinct()
 
         target_table.alias("t").merge(
-            changed_ids_df.alias("c"),
-            "t.sales_id = c.sales_id AND t.current_flag = true"
+            changed_keys.alias("c"),
+            "t.transaction_id = c.transaction_id AND t.line_number = c.line_number AND t.current_flag = true"
         ).whenMatchedUpdate(
             set={
                 "current_flag": "false",
