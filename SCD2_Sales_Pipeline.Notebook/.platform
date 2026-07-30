@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "SCD2 Sales Pipeline"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f73e2b09-57bd-4e48-8ea2-9b205e4c1941"
+  }
+}
