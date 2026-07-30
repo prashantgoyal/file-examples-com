@@ -47,9 +47,16 @@ from delta.tables import DeltaTable
 spark = SparkSession.builder.appName("SCD2_Sales_Pipeline").getOrCreate()
 print("Spark session initialized")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
-source_file = "/lakehouse/default/Files/seed_sales.csv"
+source_file = "abfss://cb3a2f29-6cfd-41ff-a015-d681399cdf4f@onelake.dfs.fabric.microsoft.com/9ebea46e-2a32-4840-ac5d-6c51562477cb/Files/seed_sales.csv"
 target_path = "Files/silver/scd2_seed_sales"
 
 raw_df = spark.read.format("csv") \
@@ -59,6 +66,13 @@ raw_df = spark.read.format("csv") \
     .load(source_file)
 
 print(f"Loaded source rows: {raw_df.count()}")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -88,6 +102,13 @@ staging_df = raw_df \
         F.col("promotion_id"),
         F.col("quantity_sold")
     )))
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -125,9 +146,46 @@ else:
     staging_df.write.format("delta").mode("overwrite").option("overwriteSchema", "true").save(target_path)
     print("Created new SCD2 delta table with initial history.")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 current_count = spark.read.format("delta").load(target_path).filter("current_flag = true").count()
 total_count = spark.read.format("delta").load(target_path).count()
 print(f"Current active records: {current_count}")
 print(f"Total history records: {total_count}")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = spark.read.parquet("Files/silver/scd2_seed_sales/part-00000-701de3ce-303e-46af-9ff1-0895a5a43e0c-c000.snappy.parquet")
+# df now is a Spark DataFrame containing parquet data from "Files/silver/scd2_seed_sales/part-00000-701de3ce-303e-46af-9ff1-0895a5a43e0c-c000.snappy.parquet".
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
