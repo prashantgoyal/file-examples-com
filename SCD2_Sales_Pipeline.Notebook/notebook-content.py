@@ -26,8 +26,7 @@
 # MARKDOWN ********************
 
 # SCD2 sales pipeline
-#
-# Load source data from `/lakehouse/default/Files/seed_sales.csv`, apply slowly changing dimension type 2 logic,
+# # Load source data from `/lakehouse/default/Files/seed_sales.csv`, apply slowly changing dimension type 2 logic,
 # and write the SCD2 history output to a managed delta location.
 
 # CELL ********************
