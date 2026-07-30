@@ -1,0 +1,12 @@
+{
+  "name": "SCD2_Sales_dataload",
+  "description": "Pipeline to orchestrate the SCD2 Sales notebook load.",
+  "activities": [
+    {
+      "name": "Run SCD2 Sales Notebook",
+      "type": "Notebook",
+      "notebookPath": "SCD2_Sales_Pipeline.Notebook/notebook-content.py",
+      "dependsOn": []
+    }
+  ]
+}
