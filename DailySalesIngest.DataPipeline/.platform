@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "DailySalesIngest",
+    "description": "Daily sales ingestion pipeline"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "84464592-1c1a-9eec-4d9c-68c5d8915bc1"
+  }
+}
