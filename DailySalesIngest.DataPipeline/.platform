@@ -1,11 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
-    "type": "Notebook",
-    "displayName": "SCD2 Sales Pipeline"
+    "type": "DataPipeline",
+    "displayName": "DailySalesIngest",
+    "description": "Daily sales ingestion pipeline"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "f73e2b09-57bd-4e48-8ea2-9b205e4c1941"
+    "logicalId": "353b8e9e-203b-9065-4b55-3d3935081594"
   }
 }
