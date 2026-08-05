@@ -1,0 +1,13 @@
+{
+  "tables": [
+    {
+      "table": "Source_data_0308.sales",
+      "checks": [
+        {"type": "row_count_gt", "value": 0, "name": "non_empty_table"},
+        {"type": "null_pct_lt", "column": "order_id", "threshold": 1.0, "name": "order_id_nulls"},
+        {"type": "unique_keys", "columns": ["order_id"], "expected": 1, "name": "unique_order_id"},
+        {"type": "value_range", "column": "amount", "min": 0, "name": "amount_non_negative"}
+      ]
+    }
+  ]
+}

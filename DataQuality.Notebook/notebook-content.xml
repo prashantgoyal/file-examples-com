@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notebook>
+  <metadata>
+    <name>DataQuality.Notebook</name>
+    <language>python</language>
+    <runtime>pyspark</runtime>
+  </metadata>
+  <cells>
+    <cell type="markdown">
+      <source>
+        # Data Quality Checks
+        This notebook runs a set of configurable data quality checks using dq/dq_framework.py
+      </source>
+    </cell>
+
+    <cell type="code">
+      <source>
+from pyspark.sql import SparkSession
+import json
+import os
+
+spark = SparkSession.builder.getOrCreate()
+
+# config: list of tables and checks
+config_path = os.getenv('DQ_CONFIG_PATH', 'dq/dq_checks.json')
+with open(config_path, 'r', encoding='utf-8') as f:
+    config = json.load(f)
+
+from dq.dq_framework import run_checks_on_table, save_report, pretty_print
+
+all_results = []
+for tbl in config.get('tables', []):
+    table_name = tbl['table']
+    checks = tbl.get('checks', [])
+    res = run_checks_on_table(table_name, checks)
+    all_results.extend(res)
+
+# save to lakehouse path or local
+out_path = os.getenv('DQ_REPORT_PATH', '/tmp/dq_report.json')
+save_report(all_results, out_path)
+pretty_print(all_results)
+      </source>
+    </cell>
+  </cells>
+</notebook>
