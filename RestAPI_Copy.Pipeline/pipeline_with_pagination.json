@@ -1,0 +1,46 @@
+{
+  "name": "Copy REST API to Lakehouse with Pagination",
+  "description": "Pipeline that copies JSON data from a paginated REST API into a Lakehouse Delta path. Includes example pagination configurations.",
+  "parameters": {
+    "apiUrl": { "type": "string", "default": "https://api.example.com/data" },
+    "apiMethod": { "type": "string", "default": "GET" },
+    "apiHeaders": { "type": "object", "default": {} },
+    "destinationPath": { "type": "string", "default": "Files/ingest/rest_api_data" },
+    "paginationType": { "type": "string", "default": "NextLink" }
+  },
+  "activities": [
+    {
+      "name": "CopyFromRestApi_Paginated",
+      "type": "Copy",
+      "dependsOn": [],
+      "source": {
+        "type": "RestSource",
+        "url": "@{pipeline().parameters.apiUrl}",
+        "method": "@{pipeline().parameters.apiMethod}",
+        "headers": "@{pipeline().parameters.apiHeaders}",
+        "pagination": {
+          "type": "@{pipeline().parameters.paginationType}",
+          "nextLinkJsonPath": "next", 
+          "pageNumber": {
+            "start": 1,
+            "pageSize": 100,
+            "pageNumberParam": "page"
+          },
+          "token": {
+            "tokenParam": "continuation",
+            "nextTokenPath": "nextToken"
+          }
+        }
+      },
+      "sink": {
+        "type": "DeltaSink",
+        "path": "@{pipeline().parameters.destinationPath}",
+        "format": "json"
+      },
+      "policy": {
+        "retry": 1,
+        "timeout": "00:30:00"
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Copy REST API to Lakehouse",
+  "description": "Pipeline that copies JSON data from a REST API into a Lakehouse Delta path.",
+  "parameters": {
+    "apiUrl": { "type": "string", "default": "https://api.example.com/data" },
+    "apiMethod": { "type": "string", "default": "GET" },
+    "apiHeaders": { "type": "object", "default": {} },
+    "destinationPath": { "type": "string", "default": "Files/ingest/rest_api_data" }
+  },
+  "activities": [
+    {
+      "name": "CopyFromRestApi",
+      "type": "Copy",
+      "dependsOn": [],
+      "source": {
+        "type": "RestSource",
+        "url": "@{pipeline().parameters.apiUrl}",
+        "method": "@{pipeline().parameters.apiMethod}",
+        "headers": "@{pipeline().parameters.apiHeaders}",
+        "pagination": {
+          "type": "None"
+        }
+      },
+      "sink": {
+        "type": "DeltaSink",
+        "path": "@{pipeline().parameters.destinationPath}",
+        "format": "json"
+      },
+      "policy": {
+        "retry": 1,
+        "timeout": "00:30:00"
+      }
+    }
+  ]
+}
